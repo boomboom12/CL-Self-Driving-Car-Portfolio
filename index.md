@@ -47,11 +47,7 @@ For your second milestone, explain what you've worked on since your previous mil
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cfpAFCpazYc?si=DCRhDKv3flhmxadt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For your first milestone, describe what your project is and how you plan to build it. You can include:
-- An explanation about the different components of your project and how they will all integrate together
-- Technical progress you've made so far
-- Challenges you're facing and solving in your future milestones
-- What your plan is to complete your project
+My project, the self driving car, contains a lot of different pieces that work together and allow the car to function. First, it has a main baseplate that all the parts are screwed onto, such as electronic boards like the Arduino Uno, LED object sensors, and a mini breadboard to create circuits that allow each sensor and the motors to connect to the Arduino via wires. So far, I have assembled the entire Arduino, as shown in my milestone video, and have gotten it to move, turn, follow a black line using color sensors, and use the LED object sensors to avoid walls and anything that comes close to the car. A big challenge I am currently facing are that the speed of the motors is not the same when moving forwards or backwards, causing the vehicle to veer left during movement. However, in a later step I will learn how to calibrate the speed of each motor, and I can adjust it as needed to allow them to move at the same speed. Overall, I am excited to finish the tutorial stage and move onto my modifications of the car.
 
 # Schematics 
 Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. 
