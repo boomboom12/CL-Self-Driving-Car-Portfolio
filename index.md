@@ -35,11 +35,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone 
+Hi, my name is Christopher and I'm from South Pasadena High School, and I am excited to what I did in my milestone 2 with you. First, I learned to use the ultrasonic sensor to detect obstacles and even follow my hand, then combined what I learned in the previous steps to make the car drive on its own. I also added remote control using the IRemote library after, which I thought was really cool since it reminded me of playing with RC cars in my childhood. One issue that I faced was that the car veered to one side because one motor was faster, but I fixed it by adjusting the motor speeds so it could finally drive straight. Now I’m planning to add RGB lights to show speed, a top shell, and color detection. Overall, I’m very excited to keep working on it and see where it goes.
 
 # First Milestone
 
