@@ -1,11 +1,11 @@
 # Self Driving Car Project w/ Color Recognition Software
 Hi, I'm Christopher and welcome to my portfolio! My project is a Self Driving Car that can operate with a remote control or on it's own with obstacle avoidance modules that allow it to steer clear of any walls or objects that get in it's way! My main modification that I have added is color recognition software, with it being able to recognize different colors and play a certain tone depending on the color it senses.
 
-You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
-```HTML 
+
+
 <!--- This is an HTML comment in Markdown -->
 <!--- Anything between these symbols will not render on the published site -->
-```
+
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -31,9 +31,7 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 # Second Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JMvCpzSXIag?si=zKpc_6qXy9Ut-ZDU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Hi, my name is Christopher and I'm from South Pasadena High School, and I am excited to what I did in my milestone 2 with you. First, I learned to use the ultrasonic sensor to detect obstacles and even follow my hand, then combined what I learned in the previous steps to make the car drive on its own. I also added remote control using the IRemote library after, which I thought was really cool since it reminded me of playing with RC cars in my childhood. One issue that I faced was that the car veered to one side because one motor was faster, but I fixed it by adjusting the motor speeds so it could finally drive straight. Now I’m planning to add RGB lights to show speed, a top shell, and color detection. Overall, I’m very excited to keep working on it and see where it goes.
 
