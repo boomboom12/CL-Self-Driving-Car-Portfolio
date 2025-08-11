@@ -48,15 +48,304 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. 
 
 ```c++
+#include <IRremote.h>
+
+// TCS230 or TCS3200 pins wiring to Arduino
+#define S0 8
+#define S1 11
+#define S2 2
+#define S3 4
+#define sensorOut 3
+const int SpeakerPin = 13;
+const int IR_RECEIVE_PIN = 12;  // Define the pin number for the IR Sensor
+
+const int A_1B = 5;
+const int A_1A = 6;
+const int B_1B = 9;
+const int B_1A = 10;
+
+int speed = 150;
+
+// Stores frequency read by the photodiodes
+int redFrequency = 0;
+int greenFrequency = 0;
+int blueFrequency = 0;
+
+// Stores the red. green and blue colors
+int redColor = 0;
+int greenColor = 0;
+int blueColor = 0;
+
 void setup() {
-  // put your setup code here, to run once:
+  // Setting the outputs
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+
+  
+  // Setting the sensorOut as an input
+  pinMode(sensorOut, INPUT);
+  
+  // Setting frequency scaling to 20%
+  digitalWrite(S0,HIGH);
+  digitalWrite(S1,LOW);
+  pinMode(SpeakerPin, OUTPUT);  // Set pin as output
+  pinMode(A_1B, OUTPUT);
+  pinMode(A_1A, OUTPUT);
+  pinMode(B_1B, OUTPUT);
+  pinMode(B_1A, OUTPUT);
+
+  //IR remote
+  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);  // Start the IR receiver // Start the receiver
+
+ 
+  
+  // Begins serial communication
   Serial.begin(9600);
-  Serial.println("Hello World!");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  if (IrReceiver.decode()) {
+    //    Serial.println(results.value,HEX);
+    String key = decodeKeyValue(IrReceiver.decodedIRData.command);
+    if (key != "ERROR") {
+      Serial.println(key);
 
+      if (key == "+") {
+        speed += 50;
+      } else if (key == "-") {
+        speed -= 50;
+      } else if (key == "2") {
+        moveForward(speed);
+        delay(1000);
+      } else if (key == "1") {
+        moveLeft(speed);
+      } else if (key == "3") {
+        moveRight(speed);
+      } else if (key == "4") {
+        turnLeft(speed);
+      } else if (key == "6") {
+        turnRight(speed);
+      } else if (key == "7") {
+        backLeft(speed);
+      } else if (key == "9") {
+        backRight(speed);
+      } else if (key == "8") {
+        moveBackward(speed);
+        delay(1000);
+      }
+
+      if (speed >= 255) {
+        speed = 255;
+      }
+      if (speed <= 0) {
+        speed = 0;
+      }
+      delay(500);
+      stopMove();
+    }
+
+    IrReceiver.resume();  // Enable receiving of the next value
+  }
+  // Setting RED (R) filtered photodiodes to be read
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,LOW);
+  
+  // Reading the output frequency
+  redFrequency = pulseIn(sensorOut, LOW);
+  // Remaping the value of the RED (R) frequency from 0 to 255
+  // You must replace with your own values. Here's an example: 
+  // redColor = map(redFrequency, 70, 120, 255,0);
+  redColor = map(redFrequency, 107, 200, 255,0);
+  
+  // Printing the RED (R) value
+  Serial.print("R = ");
+  Serial.print(redColor);
+  delay(100);
+  
+  // Setting GREEN (G) filtered photodiodes to be read
+  digitalWrite(S2,HIGH);
+  digitalWrite(S3,HIGH);
+  
+  // Reading the output frequency
+  greenFrequency = pulseIn(sensorOut, LOW);
+  // Remaping the value of the GREEN (G) frequency from 0 to 255
+  // You must replace with your own values. Here's an example: 
+  // greenColor = map(greenFrequency, 100, 199, 255, 0);
+  greenColor = map(greenFrequency, 73, 265, 255, 0);
+  
+  // Printing the GREEN (G) value  
+  Serial.print(" G = ");
+  Serial.print(greenColor);
+  delay(100);
+ 
+  // Setting BLUE (B) filtered photodiodes to be read
+  digitalWrite(S2,LOW);
+  digitalWrite(S3,HIGH);
+  
+  // Reading the output frequency
+  blueFrequency = pulseIn(sensorOut, LOW);
+  // Remaping the value of the BLUE (B) frequency from 0 to 255
+  // You must replace with your own values. Here's an example: 
+  // blueColor = map(blueFrequency, 38, 84, 255, 0);
+  blueColor = map(blueFrequency, 100, 250, 255, 0);
+  
+  // Printing the BLUE (B) value 
+  Serial.print(" B = ");
+  Serial.print(blueColor);
+  delay(2000);
+
+  // Checks the current detected color and prints
+  // a message in the serial monitor
+  if (redColor < 110 && greenColor < 35 && blueColor < 25) {
+      Serial.println(" - BLACK detected!");
+      tone(SpeakerPin, 100, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if (249 < redColor < 270 && greenColor > 300 && 250 < blueColor < 260) {
+      Serial.println(" - BROWN detected!");
+      tone(SpeakerPin, 200, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if (redColor > 200 && greenColor > 150 && blueColor > 200) {
+      Serial.println(" - WHITE detected!");
+      tone(SpeakerPin, 300, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if (redColor > 30 && greenColor > 135 && blueColor < 110) {
+      Serial.println(" - YELLOW detected!");
+      tone(SpeakerPin, 400, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if(redColor > greenColor && redColor > blueColor){
+      Serial.println(" - RED detected!");
+      tone(SpeakerPin, 500, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if(greenColor > redColor && greenColor > blueColor){
+    Serial.println(" - GREEN detected!");
+    tone(SpeakerPin, 600, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else if(blueColor > redColor && blueColor > greenColor){
+    Serial.println(" - BLUE detected!");
+    tone(SpeakerPin, 700, 500);  // Play a tone ( [Pin] , [Tone_Frequency] , [Duration_ms] )
+  }
+  else{
+    Serial.println("UNKNOWN COLOR");
+  }
+
+}
+
+void moveForward(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, speed);
+  analogWrite(B_1B, speed);
+  analogWrite(B_1A, 0);
+}
+
+void moveBackward(int speed) {
+  analogWrite(A_1B, speed);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, speed);
+}
+
+void turnRight(int speed) {
+  analogWrite(A_1B, speed);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, speed);
+  analogWrite(B_1A, 0);
+}
+
+void turnLeft(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, speed);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, speed);
+}
+
+void moveLeft(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, speed);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+}
+
+void moveRight(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, speed);
+  analogWrite(B_1A, 0);
+}
+
+void backLeft(int speed) {
+  analogWrite(A_1B, speed);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+}
+
+void backRight(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, speed);
+}
+
+void stopMove() {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+}
+
+
+String decodeKeyValue(long result)
+{
+  switch(result){
+    case 0x16:
+      return "0";
+    case 0xC:
+      return "1"; 
+    case 0x18:
+      return "2"; 
+    case 0x5E:
+      return "3"; 
+    case 0x8:
+      return "4"; 
+    case 0x1C:
+      return "5"; 
+    case 0x5A:
+      return "6"; 
+    case 0x42:
+      return "7"; 
+    case 0x52:
+      return "8"; 
+    case 0x4A:
+      return "9"; 
+    case 0x9:
+      return "+"; 
+    case 0x15:
+      return "-"; 
+    case 0x7:
+      return "EQ"; 
+    case 0xD:
+      return "U/SD";
+    case 0x19:
+      return "CYCLE";         
+    case 0x44:
+      return "PLAY/PAUSE";   
+    case 0x43:
+      return "FORWARD";   
+    case 0x40:
+      return "BACKWARD";   
+    case 0x45:
+      return "POWER";   
+    case 0x47:
+      return "MUTE";   
+    case 0x46:
+      return "MODE";       
+    case 0x0:
+      return "ERROR";   
+    default :
+      return "ERROR";
+    }
 }
 ```
 
