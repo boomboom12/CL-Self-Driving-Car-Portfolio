@@ -1,5 +1,5 @@
-# Self Driving Car Project
-Replace this text with a brief description (2-3 sentences) of your project. This description should draw the reader in and make them interested in what you've built. You can include what the biggest challenges, takeaways, and triumphs from completing the project were. As you complete your portfolio, remember your audience is less familiar than you are with all that your project entails!
+# Self Driving Car Project w/ Color Recognition Software
+Hi, I'm Christopher and welcome to my portfolio! My project is a Self Driving Car that can operate with a remote control or on it's own with obstacle avoidance modules that allow it to steer clear of any walls or objects that get in it's way! My main modification that I have added is color recognition software, with it being able to recognize different colors and play a certain tone depending on the color it senses.
 
 You should comment out all portions of your portfolio that you have not completed yet, as well as any instructions:
 ```HTML 
